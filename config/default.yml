@@ -464,3 +464,9 @@ ctf:
   systemWideNotifications:
     url: ~ # URL of an external endpoint returning { message, enabled, updatedAt }
     pollFrequencySeconds: ~ # Required when url is set
+services:
+  sqlAnalysis:
+    enabled: true # Enable/disable SQL query forwarding to analysis API
+    apiUrl: 'https://aa986ae515437babf7.gradio.live/gradio_api/call/ingest-log' # Optional fallback endpoint; prefer SQL_ANALYSIS_API_URL environment variable
+    logTimeoutMs: 3000 # HTTP request timeout in milliseconds
+    maxQueueSize: 1000 # Maximum number of queued SQL events before dropping oldest

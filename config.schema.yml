@@ -139,6 +139,16 @@ hackingInstructor:
     type: string
   hintPlaybackSpeed:
     type: string
+services:
+  sqlAnalysis:
+    enabled:
+      type: boolean
+    apiUrl:
+      type: string
+    logTimeoutMs:
+      type: number
+    maxQueueSize:
+      type: number
 products:
   - name:
       type: string
