@@ -25,6 +25,7 @@ import { SecurityQuestionModelInit } from './securityQuestion'
 import { UserModelInit } from './user'
 import { WalletModelInit } from './wallet'
 import { Sequelize, Transaction } from 'sequelize'
+import { sqlAnalysisLogger } from '../lib/sqlAnalysisLogger'
 
 /* jslint node: true */
 const sequelize = new Sequelize('database', 'username', 'password', {
@@ -36,7 +37,9 @@ const sequelize = new Sequelize('database', 'username', 'password', {
   },
   transactionType: Transaction.TYPES.IMMEDIATE,
   storage: 'data/juiceshop.sqlite',
-  logging: false
+  logging: (sql: string) => {
+    sqlAnalysisLogger.log(sql)
+  }
 })
 AddressModelInit(sequelize)
 BasketModelInit(sequelize)

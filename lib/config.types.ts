@@ -130,6 +130,17 @@ export interface CtfConfig {
   }
 }
 
+export interface SqlAnalysisConfig {
+  enabled: boolean
+  apiUrl: string | null
+  logTimeoutMs: number
+  maxQueueSize: number
+}
+
+export interface ServicesConfig {
+  sqlAnalysis: SqlAnalysisConfig
+}
+
 export interface AppConfig {
   server: ServerConfig
   application: ApplicationConfig
@@ -138,4 +149,5 @@ export interface AppConfig {
   products: Product[]
   memories: Memory[]
   ctf: CtfConfig
+  services: ServicesConfig
 }
