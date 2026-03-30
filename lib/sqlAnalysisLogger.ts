@@ -31,7 +31,10 @@ class SqlAnalysisTransport {
   private initialize (): void {
     try {
       const sqlConfig = config.get<SqlAnalysisConfig>('services.sqlAnalysis')
-      this.isEnabled = sqlConfig.enabled
+      const enabledOverride = process.env.SQL_ANALYSIS_ENABLED
+      this.isEnabled = enabledOverride != null
+        ? ['1', 'true', 'yes', 'on'].includes(enabledOverride.toLowerCase())
+        : sqlConfig.enabled
       this.maxQueueSize = sqlConfig.maxQueueSize || 1000
       this.logTimeoutMs = sqlConfig.logTimeoutMs || 3000
 
@@ -45,8 +48,10 @@ class SqlAnalysisTransport {
 
       this.authToken = process.env.SQL_ANALYSIS_AUTH_TOKEN || null
       if (this.isEnabled && !this.authToken) {
-        logger.warn('SQL Analysis is enabled but SQL_ANALYSIS_AUTH_TOKEN environment variable is not set. SQL logging will operate without authentication.')
+        logger.info('SQL Analysis is enabled and operating without authentication (SQL_ANALYSIS_AUTH_TOKEN not set).')
       }
+
+      logger.info(`SQL Analysis logger initialized: enabled=${this.isEnabled.toString()}, endpointConfigured=${(this.apiUrl != null && this.apiUrl.length > 0).toString()}`)
     } catch (err) {
       logger.warn(`Failed to initialize SQL Analysis: ${(err as Error).message}`)
       this.isEnabled = false
