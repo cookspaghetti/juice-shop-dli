@@ -90,14 +90,16 @@ describe('SQL Analysis Logger', () => {
         await sqlAnalysis.sqlAnalysisLogger.flush()
 
         const payload = JSON.parse(receivedPayload)
-        expect(payload).to.have.property('sqlText')
-        expect(payload.sqlText).to.equal('SELECT * FROM users WHERE id = 1')
-        expect(payload).to.have.property('duration')
-        expect(payload.duration).to.equal(123)
-        expect(payload).to.have.property('timestamp')
-        expect(payload).to.have.property('dialect')
-        expect(payload.dialect).to.equal('sqlite')
-        expect(payload).to.have.property('environment')
+        expect(payload).to.have.property('data')
+        expect(payload.data).to.be.an('array').with.lengthOf(1)
+        expect(payload.data[0]).to.have.property('sqlText')
+        expect(payload.data[0].sqlText).to.equal('SELECT * FROM users WHERE id = 1')
+        expect(payload.data[0]).to.have.property('duration')
+        expect(payload.data[0].duration).to.equal(123)
+        expect(payload.data[0]).to.have.property('timestamp')
+        expect(payload.data[0]).to.have.property('dialect')
+        expect(payload.data[0].dialect).to.equal('sqlite')
+        expect(payload.data[0]).to.have.property('environment')
       } finally {
         server.close()
       }
@@ -209,9 +211,9 @@ describe('SQL Analysis Logger', () => {
 
         expect(receivedPayloads.length).to.equal(3)
         const payloads = receivedPayloads.map(p => JSON.parse(p))
-        expect(payloads[0].sqlText).to.equal('SELECT * FROM users')
-        expect(payloads[1].sqlText).to.equal('SELECT * FROM products')
-        expect(payloads[2].sqlText).to.equal('SELECT * FROM orders')
+        expect(payloads[0].data[0].sqlText).to.equal('SELECT * FROM users')
+        expect(payloads[1].data[0].sqlText).to.equal('SELECT * FROM products')
+        expect(payloads[2].data[0].sqlText).to.equal('SELECT * FROM orders')
       } finally {
         server.close()
       }
