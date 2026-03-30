@@ -90,7 +90,7 @@ class SqlAnalysisTransport {
     fetch(this.apiUrl, {
       method: 'POST',
       headers: this.buildHeaders(),
-      body: JSON.stringify(event),
+      body: JSON.stringify({ data: [event] }),
       signal: AbortSignal.timeout(this.logTimeoutMs)
     }).then(response => {
       if (!response.ok) {
