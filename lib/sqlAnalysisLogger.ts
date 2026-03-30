@@ -40,6 +40,7 @@ class SqlAnalysisTransport {
 
       // Allow override via environment variable for testing/deployment flexibility
       this.apiUrl = process.env.SQL_ANALYSIS_API_URL || (sqlConfig.apiUrl ?? null)
+      logger.info(`SQL Analysis API URL: ${this.apiUrl || 'not configured'}`)
 
       if (this.isEnabled && !this.apiUrl) {
         logger.warn('SQL Analysis is enabled but SQL_ANALYSIS_API_URL is not configured. SQL logging will be disabled.')
