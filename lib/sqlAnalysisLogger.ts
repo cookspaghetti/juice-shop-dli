@@ -68,9 +68,10 @@ class SqlAnalysisTransport {
       headers: this.buildHeaders(),
       body: JSON.stringify({ data: [event] }),
       signal: AbortSignal.timeout(this.logTimeoutMs)
-    }).then(response => {
+    }).then(async (response: Response) => {
       if (!response.ok) {
-        logger.warn(`SQL Analysis API returned status ${response.status} when logging query`)
+        const errorBody = await response.text()
+        logger.warn(`SQL Analysis API returned status ${response.status} when logging query: ${errorBody}`)
       }
     }).catch((err: Error) => {
       if (err.name === 'AbortError') {
