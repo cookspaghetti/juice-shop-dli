@@ -30,8 +30,8 @@ class SqlAnalysisTransport {
     logger.info(`SQL Analysis logger initialized with API endpoint: ${this.apiUrl}`)
   }
 
-  public log (sqlText: string, duration?: number): void {
-    logger.info(`SQL Command: ${sqlText}${duration ? ` (${duration}ms)` : ''}`)
+  public log (sqlText: string): void {
+    logger.info(`SQL Command: ${sqlText}`)
 
     if (!this.isEnabled || !this.apiUrl) {
       return
@@ -72,6 +72,8 @@ class SqlAnalysisTransport {
       if (!response.ok) {
         const errorBody = await response.text()
         logger.warn(`SQL Analysis API returned status ${response.status} when logging query: ${errorBody}`)
+      } else {
+        logger.info(`SQL Analysis API request successful - sent SQL: ${event.sqlText}`)
       }
     }).catch((err: Error) => {
       if (err.name === 'AbortError') {
