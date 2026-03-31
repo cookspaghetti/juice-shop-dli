@@ -10,9 +10,6 @@ import { type SqlAnalysisConfig } from './config.types'
 interface SqlLogEvent {
   timestamp: string
   sqlText: string
-  duration?: number
-  dialect: string
-  environment: string
 }
 
 class SqlAnalysisTransport {
@@ -68,10 +65,7 @@ class SqlAnalysisTransport {
 
     const event: SqlLogEvent = {
       timestamp: new Date().toISOString(),
-      sqlText,
-      duration,
-      dialect: 'sqlite',
-      environment: process.env.NODE_ENV || 'default'
+      sqlText
     }
 
     if (this.queue.length >= this.maxQueueSize) {
