@@ -110,5 +110,3 @@ class SqlAnalysisTransport {
 }
 
 export const sqlAnalysisLogger = new SqlAnalysisTransport()
-
-module.exports = { sqlAnalysisLogger }
