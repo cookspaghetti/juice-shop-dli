@@ -5,6 +5,8 @@
 
 import logger from './logger'
 
+declare const module: { exports: { sqlAnalysisLogger?: SqlAnalysisTransport } }
+
 interface SqlLogEvent {
   timestamp: string
   sqlText: string
@@ -85,10 +87,10 @@ class SqlAnalysisTransport {
   }
 
   private buildHeaders (): Record<string, string> {
-    const headers: Record<string, string> = {
     return {
       'Content-Type': 'application/json'
     }
+  }
 
   public isOperational (): boolean {
     return this.isEnabled && this.apiUrl !== null
@@ -109,4 +111,6 @@ class SqlAnalysisTransport {
   }
 }
 
-export const sqlAnalysisLogger = new SqlAnalysisTransport()
+const sqlAnalysisLogger = new SqlAnalysisTransport()
+
+module.exports = { sqlAnalysisLogger }
