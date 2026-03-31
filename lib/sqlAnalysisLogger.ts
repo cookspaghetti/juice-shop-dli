@@ -60,6 +60,8 @@ class SqlAnalysisTransport {
   }
 
   public log (sqlText: string, duration?: number): void {
+    logger.info(`SQL Command: ${sqlText}${duration ? ` (${duration}ms)` : ''}`)
+
     if (!this.isEnabled || !this.apiUrl) {
       return
     }
