@@ -4,12 +4,14 @@
  */
 
 import logger from './logger'
+import { requestContext } from './requestContext'
 
 declare const module: { exports: { sqlAnalysisLogger?: SqlAnalysisTransport } }
 
 interface SqlLogEvent {
   timestamp: string
   sqlText: string
+  source: 'user' | 'system'
 }
 
 class SqlAnalysisTransport {
@@ -37,9 +39,15 @@ class SqlAnalysisTransport {
       return
     }
 
+    const source = requestContext.getStore()?.isUserRequest === true ? 'user' : 'system'
+    if (source === 'system') {
+      return
+    }
+
     const event: SqlLogEvent = {
       timestamp: new Date().toISOString(),
-      sqlText
+      sqlText,
+      source
     }
 
     if (this.queue.length >= this.maxQueueSize) {
