@@ -44,6 +44,10 @@ class SqlAnalysisTransport {
       return
     }
 
+    if (!/\bWHERE\b/i.test(sqlText)) {
+      return
+    }
+
     const event: SqlLogEvent = {
       timestamp: new Date().toISOString(),
       sqlText,
