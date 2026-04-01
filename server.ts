@@ -104,6 +104,7 @@ import authenticatedUsers from './routes/authenticatedUsers'
 import { securityQuestion } from './routes/securityQuestion'
 import { servePremiumContent } from './routes/premiumReward'
 import { contractExploitListener } from './routes/web3Wallet'
+import { requestContextMiddleware } from './lib/requestContext'
 import { updateUserProfile } from './routes/updateUserProfile'
 import { getVideo, promotionVideo } from './routes/videoHandler'
 import { likeProductReviews } from './routes/likeProductReviews'
@@ -173,6 +174,9 @@ restoreOverwrittenFilesWithOriginals().then(() => {
   app.locals.captchaBypassReqTimes = []
   app.locals.abused_ssti_bug = false
   app.locals.abused_ssrf_bug = false
+
+  /* Tag all requests as user-invoked for SQL analysis logging */
+  app.use(requestContextMiddleware)
 
   /* Compression for all requests */
   app.use(compression())
